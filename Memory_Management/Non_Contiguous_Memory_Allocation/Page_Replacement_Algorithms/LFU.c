@@ -54,6 +54,8 @@ int search(int page_no)
     return NOT_FOUND;
 }
 
+
+//Count the occurance of previous page references
 void set_count(int r)
 {
     //Initially, everyting is Zero
@@ -64,10 +66,11 @@ void set_count(int r)
 
     for (int i,k =  r- 1; k >= 0; k--)
     {
-        i = search(ref[k]);
-        
+        i = search(ref[k]); // Check is the page reference is present in the current frame
+
         if (i != NOT_FOUND)
         {
+            //Search gives the index of page reference in the current frame, or -1 (NOT FOUND)
             count[i]++;
         }
         
@@ -75,6 +78,8 @@ void set_count(int r)
    
 }
 
+
+//This function finds a, page reference in temperory frame
 int find(int page_no, int temp_frame[])
 {
     for (int i = 0; i < frame_size; i++)
@@ -87,6 +92,8 @@ int find(int page_no, int temp_frame[])
     return NOT_FOUND;
 }
 
+
+//This function gives the minimum page count 
 int get_min()
 {
     int min = count[0];
@@ -102,24 +109,27 @@ int get_min()
     return min;
 }
 
-
+// Gives the position for the current page reference to insert into the current frame
 int get_pos(int r)
 {
     int pos, temp_pos, min, temp_frame[20];
 
     for (int i = 0; i < frame_size ; i++)
     {
+        // If there is an empty slot in the current frame, then insert the new page there
         if (frame[i] == -1)
         {
             return i;
         }
         
+        // Copy current frame into temperary frame
         temp_frame[i] = frame[i];
     }
     
-    set_count(r);
-    min = get_min();
+    set_count(r);   // count the occurenece of page references (which are in current frame)
+    min = get_min();  // and get minimum count from them
 
+    //We want to insert the page at place of a page which 
     for (int i = 0; i < frame_size; i++)
     {
         if ( count[i] != min )
@@ -149,10 +159,13 @@ void lfu()
     int found, pos;
     page_fault = 0;
 
+    // r traverse through reference string (page references)
     for (int r = 0; r < no_of_ref; r++)
     {
+        // Check if, current Page reference exists in the current Frame
         found = search(ref[r]);
 
+        // If not exists, then get position to add this page into current frame
         if (found == NOT_FOUND)
         {
             page_fault++;
@@ -161,11 +174,13 @@ void lfu()
             pos = get_pos(r);
             frame[pos] = ref[r];
         }
-        else
+        else 
         {
+            // else do nothing, keep current frame as it is
             frame_status[r] = PAGE_HIT;
         }
 
+        // Store the snap-shot of the current frame
         for (int i = 0; i < frame_size; i++)
         {
             table[i][r] = frame[i];
