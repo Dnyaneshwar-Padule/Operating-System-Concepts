@@ -61,6 +61,7 @@ int get_pos(int r)
         }
     }
     
+    //The most recently used page is previous page, get it's location in Current frame and add new page there
     return search( ref[r-1] );
 }
 

@@ -35,6 +35,10 @@ void accept()
     }
 }
 
+
+/**
+ * @brief This function searches a page reference in current frame
+ */
 int search(int page_no)
 {
     for (int i = 0; i < frame_size; i++)
@@ -48,6 +52,10 @@ int search(int page_no)
     return NOT_FOUND;
 }
 
+
+/**
+ * @brief This function performs FIFO algorithm
+ */
 void fifo()
 {
     int pos, r, found;

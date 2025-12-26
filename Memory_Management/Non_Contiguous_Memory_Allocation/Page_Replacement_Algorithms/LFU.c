@@ -55,7 +55,10 @@ int search(int page_no)
 }
 
 
-//Count the occurance of previous page references
+/*
+    Count the occurance of previous page references
+    In short, simply count of occurance of page references in current frame
+ */
 void set_count(int r)
 {
     //Initially, everyting is Zero
@@ -79,7 +82,7 @@ void set_count(int r)
 }
 
 
-//This function finds a, page reference in temperory frame
+//This function finds a page reference in temperory frame
 int find(int page_no, int temp_frame[])
 {
     for (int i = 0; i < frame_size; i++)
@@ -129,7 +132,7 @@ int get_pos(int r)
     set_count(r);   // count the occurenece of page references (which are in current frame)
     min = get_min();  // and get minimum count from them
 
-    //We want to insert the page at place of a page which 
+    //We want to insert the page at place of a page which is least frequently used, or has lowest occurence (count)
     for (int i = 0; i < frame_size; i++)
     {
         if ( count[i] != min )
@@ -138,6 +141,7 @@ int get_pos(int r)
         }
     }
 
+    //If more than one page references has same minimum count, then check who came first
     for (int k = r - 1 ; k >= 0; k--)
     {
         temp_pos = find(ref[k],temp_frame );
